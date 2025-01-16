@@ -12,8 +12,9 @@ const staticPath = path.join(__dirname,"./website");
 
 // TO set the view engine
 app.set('view engine', 'hbs');
+const partials = path.join(__dirname,"./partials")
+hbs.registerPartials(partials);
 
-hbs.registerPartials("C:/Users/Rites/OneDrive/Desktop/CabShare/Car Rental/partials");
 
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
@@ -85,15 +86,15 @@ app.post("/login", async(req,res)=>{
 })
 
 app.get("/home/*",(req,res)=>{
-    res.render('404'),{
+    res.render('404',{
         errorComment : "Oops! No Page Found"
-    };
+    });
 });
 
 app.get('*', (req,res)=>{
-    res.render('404'),{
+    res.render('404',{
         errorcomment : "Oops! No Page Found"
-    };
+    });
 })
 
 

@@ -3,37 +3,99 @@
   <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="contact.css">
     {{>headerLinks}}
     <style>
-        form{
-            position: absolute;
-            top: 100px;
-            margin: auto 500px;
-        }
+
+      /* Style the form container with animation */
+      
+      form{
+         position: absolute;
+         top: 100px;
+         margin: auto 500px;
+      }
     </style>
   </head>
   <body>
       {{>header}}
-      <form action="/sign" class="sign" method="POST">
-         <div class="form-group">
+      <div class="fadeInDown">
+      <form action="/sign" class="sign" method="POST" autocomplete="off" onsubmit="return checkPassword()">
+         <div class="fadeIn first">
+            <img src="./Images/about.png" height="130" id="icon" alt="User Icon" />
+         </div>
+         <div class="form-group fadeIn second">
             <label for="exampleInputEmail1">Email address</label>
-            <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+            <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>
             <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
          </div>
-         <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
+         <div class="form-group fadeIn third">
+            <label for="exampleInputPassword1 ">Password</label>
             <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            <div class="pass1"></div>
          </div>
-         <div class="form-group">
+         <div class="form-group fadeIn third">
             <label for="exampleInputPassword2">Confirm Password</label>
             <input type="password" name="confirm_password" class="form-control" id="exampleInputPassword2" placeholder="Password">
+            <div class="pass2"></div>
          </div>
-         <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-         </div>
-         <button type="submit" class="btn btn-primary">Register</button>
-      </form> 
-    <script src="./signjs.js"></script>
+
+         <button type="submit" class="btn btn-secondary fadeIn fourth">Register</button>
+      </form>
+      </div>
+   {{>footer}}
   </body>
+  <script>
+      function checkPassword() {
+         var c = document.getElementById("exampleInputPassword1").value;
+         var d = document.getElementById("exampleInputPassword2").value;
+         var isValid = true;
+
+         // Password length check
+         if (c == "") {
+            document.getElementById('pass1').innerHTML = "*It is mandatory";
+            isValid = false;
+         } else if (c.length < 8 || c.length > 15) {
+            document.getElementById('pass1').innerHTML = "Password should be between 8 to 15";
+            isValid = false;
+         } else {
+            document.getElementById('pass1').innerHTML = "";
+
+            var numb = false;
+            var smallA = false;
+            var bigA = false;
+            var spChar = false;
+
+            for (var i = 0; i < c.length; i++) {
+                  var ch = c[i];
+                  if (!isNaN(ch)) {
+                     numb = true;
+                  } else if (ch >= 'a' && ch <= 'z') {
+                     smallA = true;
+                  } else if (ch >= 'A' && ch <= 'Z') {
+                     bigA = true;
+                  } else if (ch == '@' || ch == '#' || ch == '$' || ch == '&') {
+                     spChar = true;
+                  }
+            }
+
+            if (!(numb && smallA && bigA && spChar)) {
+                  document.getElementById('pass1').innerHTML = "Password should contain at least a lowercase, an uppercase, a digit, and a special character.";
+                  isValid = false;
+            }
+         }
+
+         // Confirm password check
+         if (d == "") {
+            document.getElementById('pass2').innerHTML = "*It is mandatory";
+            isValid = false;
+         } else if (d != c) {
+            document.getElementById('pass2').innerHTML = "Re-entered Password is not same";
+            isValid = false;
+         } else {
+            document.getElementById('pass2').innerHTML = "";
+         }
+
+         return isValid;
+      }
+  </script>
 </html>
